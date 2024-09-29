@@ -15,7 +15,7 @@ export default Sidebar;
 
 const DesktopSidebar = () => {
   return (
-    <div className="p-1 md:p-10 border-r min-h-screen w-25 bg-white md;w-64 hidden sm:block">
+    <div className="p-1 md:p-10 border-r min-h-screen w-25 bg-white md:w-64 hidden sm:block">
       <div className="flex flex-col gap-20 top-10 sticky left-0">
         <div className="w-full">
           <img src="/logo.svg" alt="logo" className="hidden md:block" />
