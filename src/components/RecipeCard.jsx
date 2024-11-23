@@ -4,13 +4,18 @@ import { useState } from "react";
 
 const getTwoValuesFromArray = (arr) => {
   return [arr[0], arr[1]];
-}
+};
 const RecipeCard = ({ recipe, bg, badge }) => {
   const healthLabels = getTwoValuesFromArray(recipe.healthLabels);
-  const [isFavorite, setIsFavorite] = useState(localStorage.getItem("favorites")?.includes(recipe.label));
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(
+    localStorage.getItem("favorites")?.includes(recipe.label)
+  );
   const addRecipesToFavorites = () => {
     let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    const isRecipeAlreadyInFavorites = favorites.some((fav) => fav.label === recipe.label);
+    const isRecipeAlreadyInFavorites = favorites.some(
+      (fav) => fav.label === recipe.label
+    );
     if (isRecipeAlreadyInFavorites) {
       favorites = favorites.filter((fav) => fav.label !== recipe.label);
       setIsFavorite(false);
@@ -19,17 +24,23 @@ const RecipeCard = ({ recipe, bg, badge }) => {
       setIsFavorite(true);
     }
     localStorage.setItem("favorites", JSON.stringify(favorites));
-  }
+  };
   return (
     <div
-      className={`flex flex-col rounded-md overflow-hidden p-3 relative ${bg}`}
+      className={`flex flex-col rounded-md overflow-hidden p-3 relative ${bg} ${
+        isImageLoaded ? "" : "bg-white"
+      }`}
     >
       <a
         href={`https://www.youtube.com/results?search_query=${recipe.label}recipe`}
         target="_blank"
         className="relative h-32"
       >
-        <div className="skeleton absolute inset-0" />
+        <div
+          className={`absolute inset-0 bg-white ${
+            isImageLoaded ? "hidden" : "block"
+          }`}
+        />
         <img
           src={recipe.image}
           alt="recipe image"
@@ -37,6 +48,7 @@ const RecipeCard = ({ recipe, bg, badge }) => {
           onLoad={(e) => {
             e.currentTarget.style.opacity = 1;
             e.currentTarget.previousElementSibling.style.display = "none";
+            setIsImageLoaded(true);
           }}
         />
         <div className="absolute bottom-2 left-2 bg-white rounded-full p-1 cursor-pointer flex items-center gap-1 text-sm">
